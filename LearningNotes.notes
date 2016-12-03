@@ -1,0 +1,62 @@
+-----------------------------------------------------------
+    03 December 2016
+    Day 1
+-----------------------------------------------------------
+
+# info from: http://shengwangi.blogspot.com/2016/03/netty-tutorial-hello-world-example.html #
+# Objective for today: get understanding of a basic Netty backend #
+# Start building one #
+Channel:
+- Tunnel for an i/o request
+- Channels have their own pipelines
+
+Pipeline:
+- Bi-directional queue
+- Conglomerate of handlers
+- Three types of handlers: inbound, outbound, inboundoutbound
+- inboundhandler: process read-in i/o event
+- outboundhandler: process write-out i/o event
+- inboundoutboundhandler: process both.
+
+Example Pipeline:
+
+Thread ->  inboundhandler (Decoder) -> inboundHandler2 -> inboundHandler3 --> inboundoutboundhandler
+                                                                                |   
+        <--outboundHandler (Encoder) <----------------------------------------- |
+
+- First inbound usually Decoder
+- First last outbound usually Encoder
+- Normally see inoutboundhandler (last business logic) running on a different thread
+
+Decoder: Transfers read-in ByteBuf into data structure used by business/backend logic
+- Convert a byte stream into a POJOs
+
+Encoder:
+- transfers the internal data structure to ByteBuf that will finally write out by socket.
+
+!! Each Handler is responsible for passing the event to the next handler !!
+- It is necessary to invoke a method of <ChannelHandlerContext> to trigger the next handle to work.
+- Some methods of <ChannelHandlerContext>:
+Inbound event propagation methods:
+
+- ChannelHandlerContext.fireChannelRegistered()
+- ChannelHandlerContext.fireChannelActive()
+- ChannelHandlerContext.fireChannelRead(Object)
+- ChannelHandlerContext.fireChannelReadComplete()
+- ChannelHandlerContext.fireExceptionCaught(Throwable)
+- ChannelHandlerContext.fireUserEventTriggered(Object)
+- ChannelHandlerContext.fireChannelWritabilityChanged()
+- ChannelHandlerContext.fireChannelInactive()
+- ChannelHandlerContext.fireChannelUnregistered()
+Outbound event propagation methods:
+
+- ChannelHandlerContext.bind(SocketAddress, ChannelPromise)
+- ChannelHandlerContext.connect(SocketAddress, SocketAddress, ChannelPromise)
+- ChannelHandlerContext.write(Object, ChannelPromise)
+- ChannelHandlerContext.flush()
+- ChannelHandlerContext.read()
+- ChannelHandlerContext.disconnect(ChannelPromise)
+- ChannelHandlerContext.close(ChannelPromise)
+- ChannelHandlerContext.deregister(ChannelPromise)
+
+- Going over example provided in website. Look at folder <HelloWorldExampleNetty4>.
