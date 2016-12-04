@@ -60,3 +60,26 @@ Outbound event propagation methods:
 - ChannelHandlerContext.deregister(ChannelPromise)
 
 - Going over example provided in website. Look at folder <HelloWorldExampleNetty4>.
+
+--- 6:17 PM, finished HelloWorldExampleNetty4 ---
+Lessons learned:
+- ChannelHandlerContext not need be explicitly invoked?
+- Separate threads for i/o logic and main logic.
+- Rough example of how to build dummy encoder/decoder.
+
+Questions:
+- Can I send something to the server and have the client receive
+  something in return? 
+
+Seems like this server can't really do that and is kind of old.
+
+Future plan:
+1. Follow Netty user guide for 4.x (http://netty.io/wiki/user-guide-for-4.x.html#wiki-h3-6)
+   - Specifically, concentrate on Time server/client POJO and Echo server.
+2. Convert the Time server/client into a server/client that can do the following:
+   1. Client sends string messages to server
+   2. Server appends ", really?" to the message sent by the client
+   3. Server sends appended String back to the client along with a timeStamp of received
+   4. Client displays received Server message with timeStamp.
+
+- This is more or less the echo server tutorial with POJO.
